@@ -1,6 +1,6 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Grocery.App;    
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
 
@@ -12,16 +12,15 @@ namespace Grocery.App.ViewModels
         private readonly GlobalViewModel _global;
 
         [ObservableProperty]
-        private string email = "user3@mail.com";
+        private string email = "user3@mail.com"; 
 
         [ObservableProperty]
-        private string password = "user3";
-
+        private string password = "user3"; 
         [ObservableProperty]
         private string loginMessage;
 
         public LoginViewModel(IAuthService authService, GlobalViewModel global)
-        { //_authService = App.Services.GetServices<IAuthService>().FirstOrDefault();
+        {
             _authService = authService;
             _global = global;
         }
@@ -30,11 +29,17 @@ namespace Grocery.App.ViewModels
         private void Login()
         {
             Client? authenticatedClient = _authService.Login(Email, Password);
-            if (authenticatedClient != null)
+
+            if (authenticatedClient is not null)
             {
-                LoginMessage = $"Welkom {authenticatedClient.Name}!";
+                // bewaar ingelogde gebruiker en dus role
                 _global.Client = authenticatedClient;
-                Application.Current.MainPage = new AppShell();
+
+                // vriendelijke melding
+                LoginMessage = $"Welkom {authenticatedClient.Name}!";
+
+                // schakel naar Shell uit DI (App.xaml.cs heeft ShowShell())
+                ((App)Application.Current).ShowShell();
             }
             else
             {

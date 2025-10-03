@@ -19,6 +19,7 @@
         ItemsSource="{Binding Products}"
         SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" 
         SelectedIndexChanged="Picker_SelectedIndexChanged"
+        ItemDisplayBinding="{Binding Name}"
         BackgroundColor="{StaticResource Primary}"
             TextColor="{StaticResource Secondary}">
         </Picker>

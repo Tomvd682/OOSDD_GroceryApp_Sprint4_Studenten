@@ -4,8 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Grocery.App.Views"
-    xmlns:views="clr-namespace:Grocery.App.Views"
-    
     Shell.FlyoutBehavior="Disabled"
     Title="GroceryApp">
 
@@ -19,10 +17,5 @@
         <Tab Title="Meest verkocht" Icon="investment.png">
             <ShellContent Title="Meest verkochte producten" ContentTemplate="{DataTemplate local:BestSellingProductsView}" />
         </Tab>
-        <Tab Title="Klanten per product" Icon="users.png">
-            <ShellContent Title="Klanten per product"
-                  ContentTemplate="{DataTemplate local:BoughtProductsView}" />
-        </Tab>
-
     </TabBar>
 </Shell>
