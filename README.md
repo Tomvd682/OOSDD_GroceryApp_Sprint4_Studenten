@@ -20,4 +20,45 @@ Deze UC toont de klanten die een bepaald product hebben gekocht:
 - In GroceryListView voeg je een ToolbarItem toe met als binding Client.Name en als Command ShowBoughtProducts.  
 
 
+
+## Architectuur & Mappenstructuur
+
+We hanteren een gelaagde opzet:
+
+- **Grocery.Core**  
+  Domeinmodellen (entities/DTO’s), business-interfaces (services), value objects, enums.  
+  *Geen* UI- of data-access code.
+
+- **Grocery.Core.Data**  
+  Implementaties van repositories en seed-/in-memory-data (of DB later).  
+  Kent **Core**, maar niet de UI.
+
+- **Grocery.App** (MAUI)  
+  Views, ViewModels, dependency injection, app-startup en navigatie.  
+  Praat via services/repositories (interfaces) met **Core/Core.Data**.
+
+- **TestCore**  
+  Unit/integration tests over services/repositories/VM-logica.  
+  Seed testdata per test (AAA: Arrange-Act-Assert).
+
+**Dependency-richting:**  
+`Grocery.App → Grocery.Core (+ Grocery.Core.Data)`  
+`TestCore → (Core / Core.Data / App onderdelen indien nodig)`
+
+**Richtlijnen:**
+- **SRP:** 1 verantwoordelijkheid per klasse/methode (services zonder UI-kennis).
+- **Interfaces in Core**, implementaties in Core.Data.
+- **ViewModel** bevat UI-logica (binding/commands), **Service** bevat domeinlogica.
+- **Async waar passend**, geen blocking calls in UI.
+
+## Ontwerprichtlijnen (kort)
+- Naming volgt domein (bijv. *GroceryList*, *BoughtProduct*, *Client*).
+- Publieke API’s gebruiken interface-typen (`IEnumerable<T>` i.p.v. `List<T>`).
+- Exceptions/documentatie waar een methode kan falen (precondities/validatie).
+
+## Keuzes (kort beargumenteerd)
+- **Gelaagde bouw** voor testbaarheid en onderhoud (UI en data wisselbaar).  
+- **Interfaces** om afhankelijkheden te mocken.  
+- **ViewModel+Command** voor heldere UI-binding; **Service** voor domeinregels.
+
   
